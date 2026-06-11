@@ -961,7 +961,7 @@ function TopBar({ activeTab, selectedFY, setSelectedFY }) {
 // CARD WRAPPER
 // ─────────────────────────────────────────────────────────────────────────────
 
-function Card({ children, title, badge, titleRight, style = {}, noPad = false }) {
+function Card({ children, title, badge, titleRight, style = {}, noPad = false, bodyStyle = {} }) {
   return (
     <div style={{
       background: '#FFFFFF',
@@ -990,7 +990,7 @@ function Card({ children, title, badge, titleRight, style = {}, noPad = false })
           {titleRight}
         </div>
       )}
-      <div style={noPad ? {} : { padding: '13px 16px' }}>
+      <div style={noPad ? bodyStyle : { padding: '13px 16px', ...bodyStyle }}>
         {children}
       </div>
     </div>
@@ -1593,7 +1593,8 @@ function EnergyFlowDiagram({ kpi }) {
       title="Energy Flow — Power Procurement to Sales"
       badge={`T&D Loss: ${tdLoss}% · Total unaccounted: ${totalLoss.toLocaleString('en-IN')} MU`}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0', marginBottom: '14px' }}>
+      <div style={{ paddingTop: '18px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0', marginBottom: '28px' }}>
         {stages.map((s, i) => (
           <React.Fragment key={i}>
             <div style={{
@@ -1618,10 +1619,7 @@ function EnergyFlowDiagram({ kpi }) {
                   <div style={{ flex: 1, height: 2, background: '#CBD5E1' }} />
                   <div style={{ width: 0, height: 0, borderLeft: '7px solid #94A3B8', borderTop: '4px solid transparent', borderBottom: '4px solid transparent' }} />
                 </div>
-                <div style={{
-                  background: '#FFF1F2', border: '1px solid #FECDD3',
-                  borderRadius: '6px', padding: '5px 8px', textAlign: 'center', width: '100%',
-                }}>
+                <div style={{ textAlign: 'center', width: '100%', padding: '5px 8px' }}>
                   <div style={{ fontSize: '8px', fontWeight: '700', color: '#DC2626', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: '1px' }}>
                     {losses[i].label}
                   </div>
@@ -1652,6 +1650,7 @@ function EnergyFlowDiagram({ kpi }) {
           <span style={{ fontSize: '10px', color: '#64748B', fontWeight: '600' }}>Total T&D Loss:</span>
           <span style={{ fontSize: '15px', fontWeight: '800', color: '#DC2626' }}>{totalLoss.toLocaleString('en-IN')} MU ({tdLoss}%)</span>
         </div>
+      </div>
       </div>
     </Card>
   );
@@ -1942,8 +1941,12 @@ function EnergyNetworkOverview({ selectedFY }) {
   ];
 
   return (
-    <Card title="Network Structure" badge={`Goa Electricity Department · ${selectedFY}`}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+    <Card
+      title="Network Structure"
+      badge={`Goa Electricity Department · ${selectedFY}`}
+      bodyStyle={{ display: 'flex', gap: '12px', alignItems: 'stretch' }}
+    >
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '7px' }}>
         {items.map((item, i) => (
           <div key={i} style={{
             display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -1955,9 +1958,9 @@ function EnergyNetworkOverview({ selectedFY }) {
         ))}
       </div>
 
-      <div style={{ marginTop: '10px', background: '#F8FAFC', border: '1px solid #E5E7EB', borderRadius: '8px', padding: '10px 12px' }}>
+      <div style={{ width: '140px', flexShrink: 0, background: '#F8FAFC', border: '1px solid #E5E7EB', borderRadius: '8px', padding: '10px 12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div style={{ fontSize: '10px', fontWeight: '700', color: '#374151', marginBottom: '8px' }}>Network Ratios</div>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', flex: 1, justifyContent: 'space-evenly' }}>
           {ratios.map((r, i) => (
             <div key={i}>
               <div style={{ fontSize: '8.5px', color: '#94A3B8', fontWeight: '500' }}>{r.label}</div>
@@ -2022,7 +2025,7 @@ function EnergyLossPage({ yearData, kpi, selectedFY, prevKpi, trendVs }) {
       </div>
 
       {/* ── Row 2: Energy Flow + Network ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 226px', gap: '12px', marginBottom: '12px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '12px', marginBottom: '12px' }}>
         <EnergyFlowDiagram kpi={kpi} />
         <EnergyNetworkOverview selectedFY={selectedFY} />
       </div>
@@ -2276,7 +2279,7 @@ function DataQualityCard({ sm }) {
         </div>
       }
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '11px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
         {metrics.map((m, i) => {
           const status = m.value >= 80 ? 'good' : m.value >= 55 ? 'warning' : 'critical';
           const barColor      = { good: '#10B981', warning: '#FBBF24', critical: '#F87171' }[status];
@@ -2288,7 +2291,7 @@ function DataQualityCard({ sm }) {
 
           return (
             <div key={i}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '7px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span style={{ width: 11, height: 11, display: 'block', color: '#94A3B8', flexShrink: 0 }}>{m.icon}</span>
                   <span style={{ fontSize: '10.5px', fontWeight: '600', color: '#374151' }}>{m.label}</span>
@@ -2577,12 +2580,6 @@ function SmartMetersPage({ selectedFY, trendVs }) {
         <DivisionDataHealthCard sm={sm} />
       </div>
 
-      {/* ── Row 3: Modernization + Attention + Insights ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginBottom: '14px' }}>
-        <ModernizationCard sm={sm} />
-        <AttentionPanel alerts={sm.alerts} />
-        <SmartMetersInsights insights={sm.insights} />
-      </div>
     </>
   );
 }
