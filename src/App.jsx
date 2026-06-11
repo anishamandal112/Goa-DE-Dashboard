@@ -717,14 +717,35 @@ function Sidebar({ activeTab, setActiveTab, collapsed, setCollapsed }) {
         )}
       </div>
 
-      {/* Sub-label */}
-      {!collapsed && (
-        <div style={{ padding: '10px 14px 6px' }}>
+      {/* Sub-label + collapse toggle */}
+      <div style={{ padding: collapsed ? '10px 8px 6px' : '10px 14px 6px', display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'space-between' }}>
+        {!collapsed && (
           <div style={{ fontSize: '9px', fontWeight: '700', color: '#CBD5E1', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Navigation
           </div>
-        </div>
-      )}
+        )}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          style={{
+            width: 22, height: 22,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            borderRadius: '5px',
+            border: '1px solid #E5E7EB',
+            background: '#FFFFFF',
+            cursor: 'pointer',
+            color: '#94A3B8',
+            transition: 'all 0.15s ease',
+            flexShrink: 0,
+          }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.color = '#374151'; }}
+          onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#94A3B8'; }}
+        >
+          <span style={{ width: 11, height: 11, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {collapsed ? Ic.chevronRight : Ic.chevronLeft}
+          </span>
+        </button>
+      </div>
 
       {/* Nav items */}
       <nav style={{ flex: 1, padding: collapsed ? '10px 8px' : '4px 8px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -828,35 +849,6 @@ function Sidebar({ activeTab, setActiveTab, collapsed, setCollapsed }) {
         )}
       </div>
 
-      {/* Collapse toggle */}
-      <div style={{
-        padding: '8px',
-        display: 'flex',
-        justifyContent: collapsed ? 'center' : 'flex-end',
-        borderTop: '1px solid #F1F5F9',
-      }}>
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          style={{
-            width: 26, height: 26,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            borderRadius: '6px',
-            border: '1px solid #E5E7EB',
-            background: '#FFFFFF',
-            cursor: 'pointer',
-            color: '#94A3B8',
-            transition: 'all 0.15s ease',
-            flexShrink: 0,
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = '#F8FAFC'; e.currentTarget.style.color = '#374151'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = '#FFFFFF'; e.currentTarget.style.color = '#94A3B8'; }}
-        >
-          <span style={{ width: 13, height: 13, display: 'block' }}>
-            {collapsed ? Ic.chevronRight : Ic.chevronLeft}
-          </span>
-        </button>
-      </div>
     </aside>
   );
 }
